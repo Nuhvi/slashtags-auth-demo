@@ -34,13 +34,15 @@ const server = new Server(slashtag, {
     onauthz: (token, remote) => {
       if (!isValidUser(remote)) return { status: "error", message: "sign up first!"}
 
+      const url = SlashURL.format(remote)
+
       // Check that token is valid, and remote isn't blocked
-      const valid = validateToken(token, SlashURL.format(remote))
+      const valid = validateToken(token, url)
       if (valid) {
-        console.log('Got valid session', token, "from:", remote);
+        console.log('Got valid session', token, "from:", url);
         return { status: "ok" }
       }
-      console.log('Got invalid session', token, "from:", remote);
+      console.log('Got invalid session', token, "from:", url);
       return {status: "error", message: "invalid token"}
     }
 })

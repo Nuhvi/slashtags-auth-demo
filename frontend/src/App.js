@@ -85,7 +85,7 @@ export const Website = () => {
           {store.user ? (
             <div className="user">
               <div className="left">
-                <p>{store.user?.name || 'Anon...'}</p>
+                <p className='name'>{store.user?.name || 'Anon...'}</p>
                 <p className='url'>{truncateMid(store.user.url, 10)}</p>
               </div>
               {store.user?.image ? (

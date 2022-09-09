@@ -260,6 +260,11 @@ body,
   font-weight: bold
 }
 
+.name {
+  font-weight: bold;
+  font-size: 20px
+}
+
 .website .options a.get-it {
   cursor: pointer;
   display: flex;
