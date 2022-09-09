@@ -7,6 +7,10 @@ import { LoginForm } from './components/LoginForm';
 import { ArrowSVG } from './components/ArrowSVG';
 import * as jdenticon from 'jdenticon';
 
+
+export const truncateMid = (pk, num = 9) =>
+  pk.slice(0, num) + '...' + pk.slice(pk.length - num);
+
 export const App = () => {
   const [store, dispatch] = useReducer(reducer, initialValue);
 
@@ -82,12 +86,12 @@ export const Website = () => {
             <div className="user">
               <div className="left">
                 <p>{store.user?.name || 'Anon...'}</p>
-                <p>{store.user['@id']}</p>
+                <p className='url'>{truncateMid(store.user.url, 10)}</p>
               </div>
               {store.user?.image ? (
                 <img alt="" src={store.user.image}></img>
               ) : (
-                <Jdenticon size="48" value={store.user.id} />
+                <Jdenticon size="48" value={store.user.url} />
               )}
             </div>
           ) : (

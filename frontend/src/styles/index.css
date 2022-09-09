@@ -255,6 +255,11 @@ body,
   text-align: left;
 }
 
+.url {
+  color: #f60;
+  font-weight: bold
+}
+
 .website .options a.get-it {
   cursor: pointer;
   display: flex;
@@ -420,6 +425,10 @@ body,
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+
+.user .left p {
+  margin: 0
 }
 
 .user .left p:first-child {

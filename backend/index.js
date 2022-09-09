@@ -4,7 +4,7 @@ import JsonRPC from 'simple-jsonrpc-js';
 import {WebSocketServer} from 'ws'
 import fs from 'fs'
 
-import SDK from '@synonymdev/slashtags-sdk';
+import SDK, { SlashURL } from '@synonymdev/slashtags-sdk';
 import { Server } from '@synonymdev/slashtags-auth';
 
 /** START SLASHTAGS AUTH SETUP **/
@@ -21,6 +21,7 @@ const slashtag = sdk.slashtag()
 
 // Set profile if not already saved
 const publicDrive = slashtag.drivestore.get()
+await publicDrive.ready()
 const exists = await publicDrive.get('/profile.json')
 if (!exists) await publicDrive.put('/profile.json', Buffer.from(JSON.stringify({
   name: 'Slashtags Demo',
@@ -34,7 +35,7 @@ const server = new Server(slashtag, {
       if (!isValidUser(remote)) return { status: "error", message: "sign up first!"}
 
       // Check that token is valid, and remote isn't blocked
-      const valid = validateToken(token)
+      const valid = validateToken(token, SlashURL.format(remote))
       if (valid) {
         console.log('Got valid session', token, "from:", remote);
         return { status: "ok" }
@@ -54,12 +55,12 @@ const sessions = new Map();
 
 function isValidUser(_) { return true }
 
-function validateToken(token) {
-  const socket = isValidSession(token);
+function validateToken(token, user) {
+  const socket = sessions.get(token);
   if (!socket) return false
   socket.send(
     jrpcLite
-    .notification('userAuthenticated', { user: remoteProfile })
+    .notification('userAuthenticated', {user})
     .serialize(),
   );
   return true
